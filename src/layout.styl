@@ -1,0 +1,41 @@
+shadow()
+	3px 1px 4px #ccc
+
+select
+	height 27px
+
+.CurrencyCard
+	.currency_symbol
+		margin 0px
+		text-shadow shadow()
+
+	table
+		margin -11px 0px 0px 12px
+		border-spacing 15px 7px
+		th
+			text-align left
+		td
+			border 0px solid green
+			min-width 151px
+			padding 2px
+			&:hover
+				cursor pointer
+				background #eef
+			&:active
+				box-shadow inset 0px 0px 10px #ddf
+	
+	
+body
+	font-family 'consolas'
+	ul
+		margin 0px
+		padding 0px
+		li
+			padding 10px
+			box-shadow shadow()
+			border 1px solid #d0d3f7
+			list-style-type none
+			display inline-block
+			margin-left 20px
+			&:first-child
+				margin-left 0px
