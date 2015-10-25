@@ -4,17 +4,16 @@
 
 UI =
 	ModalWindow:
+		# Sends a form inside theModalWindow to a server
 		send: (todo, data, cb)->
 			switch todo
 				when 'currency_notifications'
-					# console.log data
 					$.ajax
 						url: 'http://akiliev.ml/currency'
 						method: 'GET'
 						dataType: 'json'
 						data: data
 						success: (recieved_data)->
-							# console.log recieved_data
 							cb recieved_data.success
 				else
 					console.log 'Don\'t know this sendModal todo O.o'
