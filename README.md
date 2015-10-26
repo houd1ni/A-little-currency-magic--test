@@ -7,4 +7,4 @@
 * DB queries responses caching.
 * make one more unsigned medint column in master table to count duplicates. 
 
-###Testlink (not minified -dev- React): [here.](http://akiliev.ml/currency)
+###[Testlink](http://akiliev.ml/currency) (not minified -dev- React)
