@@ -12,7 +12,7 @@ global.msql = require 'mysql'
 
 
 App.use '/currency/lib/', expressJS.static 'D:\\web\\node\\Currency\\public\\'
-global.https = require 'https'
+global.HTTPS_LIB = require 'https'
 Currency = require './modules/Currency.coffee'
 Currency = new Currency
 

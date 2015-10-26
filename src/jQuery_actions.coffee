@@ -25,7 +25,7 @@ UI =
 					height:265,
 					width:400,
 					modal: true,
-					title: 'Notifications center'
+					title: 'Notifications center',
 					buttons:
 
 						'Ok!': ->

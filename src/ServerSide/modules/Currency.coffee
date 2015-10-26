@@ -28,7 +28,7 @@ class Currency
 		# Loads data from a source (Tinkoff bank)
 		loadFromServer = ->
 			new Promise (fulfill, reject)->
-				https.get source, (res)-> #{host:source[0], path:source[1]}
+				HTTPS_LIB.get source, (res)-> #{host:source[0], path:source[1]}
 					str = ''
 					res.on 'data', (chunk)->
 						str += chunk;
