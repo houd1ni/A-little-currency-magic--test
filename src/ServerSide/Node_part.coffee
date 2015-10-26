@@ -1,13 +1,12 @@
 #a bit of dependences
 
-global.http = require 'http'
+global.HTTP_LIB = require 'http'
 global.expressJS = require 'express'
 compress = require 'compression'
 App = expressJS()
 App.use compress()
-global.Server = http.Server App
-global.io = require('socket.io') Server
-global.msql = require 'mysql'
+global.EXPRESS_SERVER = HTTP_LIB.Server App
+global.MySQL_DRIVER = require 'mysql'
 
 
 
