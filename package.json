@@ -7,20 +7,18 @@
     "test": "test"
   },
 	"dependencies": {
-    "jQuery": "~2.1.0",
-    "jQuery-ui": "1.11.4",
-    "Reactjs": "0.14.0",
-    "Nodejs": "0.12.7"
+    "jquery": "2.1.0",
+    "jquery-ui": "*"
   },
   "devDependencies": {
-    "gulp": "^0.4.5",
-    "gulp-minify-html": "^0.13.0",
-    "gulp-cjsx": "^0.5.1",
-    "gulp-concat": "^0.10.1",
-    "gulp-uglify": "^0.8.0",
-    "gulp-minify-css": "^0.12.3",
-    "gulp-stylus": "^0.8.2",
-    "gulp-sourcemaps": "^0.9.1"
+    "gulp": "*",
+    "gulp-minify-html": "*",
+    "gulp-cjsx": "*",
+    "gulp-concat": "*",
+    "gulp-uglify": "*",
+    "gulp-minify-css": "*",
+    "gulp-stylus": "*",
+    "gulp-sourcemaps": "*"
   },
   "repository": {
     "type": "git",
