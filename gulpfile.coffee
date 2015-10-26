@@ -1,7 +1,7 @@
 gulp = require 'gulp'
 minifyHTML = require 'gulp-minify-html'
 cjsx = require 'gulp-cjsx'
-sources = require './src/sources.coffee'
+sources = require './sources.coffee'
 sources = sources.map (a)-> a = 'src/'+a
 concat = require 'gulp-concat'
 uglify = require 'gulp-uglify'
@@ -42,3 +42,6 @@ gulp.task 'htmlpage', ->
 	gulp.src(htmlSrc)
 		.pipe(minifyHTML())
 		.pipe(gulp.dest(htmlDst));
+		
+gulp.task 'test', ->
+	true
