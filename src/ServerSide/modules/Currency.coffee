@@ -20,9 +20,10 @@ class Currency
 					data['USD_RUB'][0], data['EUR_RUB'][0], data['USD_EUR'][0], data['EUR_USD'][0],
 					data['USD_RUB'][1], data['EUR_RUB'][1], data['USD_EUR'][1], data['EUR_USD'][1]
 				]
-				System.sql.q 'select new_shot(<v0>, <v1>, <v2>, <v3>, <v4>, <v5>, <v6>, <v7>) as result', parsed_insert, (rows) =>
+				# SIGNATURE: REQUEST, RAW STATEMENTS, DBNAME(OPTIONAL), CALLBACK: (ROWS, ERROR) (in the case of error, rows === false)
+				# Doesn't matter callback or dbname first. Dbname is optional in the case of default db (depends on the project, here isn't 'currency')
+				System.sql.q 'select new_shot(<v0>, <v1>, <v2>, <v3>, <v4>, <v5>, <v6>, <v7>) as result', parsed_insert, 'currency', (rows) =>
 					if rows then fulfill rows[0].result
-				, 'currency'
 			
 		# Loads data from a source (Tinkoff bank)
 		loadFromServer = ->
@@ -78,9 +79,9 @@ class Currency
 	#Realtime updates (by interval on Client-side). WITHOUT ANY DOS PROTECTION HERE!
 	get_last_shot: ->
 		new Promise (fulfill, reject)->
-			System.sql.q 'select * from show_actual_shot', [], (actual_shot) =>
+			System.sql.q 'select * from show_actual_shot', [], 'currency', (actual_shot) =>
 				if actual_shot
-					System.sql.q 'select forecast_avg_tomorrow() as forecast', [], (forecast_rows) =>
+					System.sql.q 'select forecast_avg_tomorrow() as forecast', [], 'currency', (forecast_rows) =>
 						if forecast_rows
 							forecast = forecast_rows[0].forecast.split('_')
 							forecast.shift()
@@ -110,9 +111,7 @@ class Currency
 									eur_usd_spread: forecast[5]
 
 						else reject false;
-					, 'currency'
 				else reject false;
-			, 'currency'
 
 	# Some work with email-notifications
 	prepare_notifications: (user_get_data, cb)->
