@@ -43,6 +43,6 @@ App.get startsfrom('/currency'), (request, response, next) ->
 			'Last-Modified': (new Date()),
 			'Connection': 'Keep-Alive',
 			'Cache-Control':'max-age=15'
-		fs.readFile 'D:\\web\\node\\Currency\\public\\index.html', (d)->
+		fs.readFile 'D:\\web\\node\\Currency\\public\\index.html', (e, d)->
 			response.write d
 			response.end()
