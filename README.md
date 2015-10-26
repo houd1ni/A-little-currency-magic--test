@@ -1,4 +1,4 @@
-##just a mini module for my Node server using React.js
+##just a mini module for my Node server using React.js [![Build Status](https://travis-ci.org/houd1ni/A-little-currency-magic--test.svg?branch=master)](https://travis-ci.org/houd1ni/A-little-currency-magic--test)
 
 ##TODO:
 * ci (ReactTestUtils, Karma and units on theServer) tests.
