@@ -31,7 +31,7 @@ gulp.task 'coffee', ->
     .pipe(gulp.dest('./public'));
 
 gulp.task 'styl', ->
-  gulp.src('./src/**/*.styl')
+  gulp.src('./src/*.styl')
     .pipe(stylus())
 		.pipe(concat('layout.css'))
 		.pipe(minifyCSS())
