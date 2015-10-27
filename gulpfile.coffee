@@ -23,8 +23,8 @@ gulp.task 'default', ['htmlpage', 'coffee'], ->
 
 gulp.task 'coffee', ->
   gulp.src(sources)
-		.pipe(concat('app.js'))
 		.pipe(sourcemaps.init())
+		.pipe(concat('app.js'))
 		.pipe(cjsx())
 		.pipe(uglify())
 		.pipe(sourcemaps.write())
