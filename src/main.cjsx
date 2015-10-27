@@ -1,4 +1,5 @@
-State =
+
+State = # Exchange global Object
 	ModalWindow: {}
 			
 

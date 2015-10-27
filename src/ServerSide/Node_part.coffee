@@ -15,9 +15,12 @@ global.HTTPS_LIB = require 'https'
 Currency = require './modules/Currency.coffee'
 Currency = new Currency
 
+
 App.get startsfrom('/currency'), (request, response, next) ->
+
 	if request.hostname != 'akiliev.ml' then next()
 	get_query = Query.get_parse request.url
+
 	if get_query.data.todo?
 		todo = get_query.data.todo
 		response.writeHead 200, 'Content-Type': 'application/json; charset=utf-8'

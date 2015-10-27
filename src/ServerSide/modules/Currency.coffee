@@ -5,27 +5,13 @@ class Currency
 		# Params
 		source = 'https://www.tinkoff.ru/api/v1/currency_rates'
 		currencyList = ['EUR','USD', 'RUB']
-		server_poll_freq = 30 #min
+		server_poll_period = 30 #min
 		@precision = 3
 
-		# A setInterval wrapper
-		tiktak = (freq, todo)-> #frequency in seconds
+		tiktak = (period, todo)-> #period in seconds
 			todo()
-			setInterval todo, freq*1000*60
+			setInterval todo, period*1000*60
 
-		# Inserts parsed data to DataBase
-		insertInDb = (data)->
-			new Promise (fulfill, reject)->
-				parsed_insert = [
-					data['USD_RUB'][0], data['EUR_RUB'][0], data['USD_EUR'][0], data['EUR_USD'][0],
-					data['USD_RUB'][1], data['EUR_RUB'][1], data['USD_EUR'][1], data['EUR_USD'][1]
-				]
-				# SIGNATURE: REQUEST, RAW STATEMENTS, DBNAME(OPTIONAL), CALLBACK: (ROWS, ERROR) (in the case of error, rows === false)
-				# Doesn't matter callback or dbname first. Dbname is optional in the case of default db (depends on the project, here isn't 'currency')
-				System.sql.q 'select new_shot(<v0>, <v1>, <v2>, <v3>, <v4>, <v5>, <v6>, <v7>) as result', parsed_insert, 'currency', (rows) =>
-					if rows then fulfill rows[0].result
-			
-		# Loads data from a source (Tinkoff bank)
 		loadFromServer = ->
 			new Promise (fulfill, reject)->
 				HTTPS_LIB.get source, (res)-> #{host:source[0], path:source[1]}
@@ -39,7 +25,6 @@ class Currency
 						catch e
 							reject err
 
-		# Parse downloaded data to insert to DB
 		parseUploaded = (data)->
 			new Promise (fulfill, reject)->
 				if typeof data != 'object'
@@ -53,22 +38,30 @@ class Currency
 						currencyList.indexOf(cur.toCurrency.name)>=0
 					prepared_data = {}
 					for cur in data
-						prepared_data[cur.fromCurrency.name+'_'+cur.toCurrency.name] = [cur.sell, cur.buy, +((cur.sell - cur.buy).toFixed 9)]
+						from_to = cur.fromCurrency.name+'_'+cur.toCurrency.name
+						prepared_data[from_to] = [cur.sell, cur.buy, ((+cur.sell - cur.buy).toFixed 9)]
 					
 					# { USD_RUB:[buy, sell], EUR_RUB:--||--, --||-- for spreads... }
 					fulfill prepared_data
 				catch e
 					reject e
 
-		# just a tail.
-		checkinsertion = (out)->
+		insertInDb = (data)-> # ... after adaptiong for db arch
+			new Promise (fulfill, reject)->
+				parsed_insert = [
+					data['USD_RUB'][0], data['EUR_RUB'][0], data['USD_EUR'][0], data['EUR_USD'][0],
+					data['USD_RUB'][1], data['EUR_RUB'][1], data['USD_EUR'][1], data['EUR_USD'][1]
+				]
+				# SIGNATURE: REQUEST, RAW STATEMENTS, DBNAME(OPTIONAL), CALLBACK: (ROWS, ERROR) (in the case of error, rows === false)
+				System.sql.q 'select new_shot(<v0>, <v1>, <v2>, <v3>, <v4>, <v5>, <v6>, <v7>) as result', parsed_insert, 'currency', (rows) =>
+					if rows then fulfill rows[0].result
+
+		checkinsertion = (out)-> # just a tail.
 			if out != 'ok' then logg 'Error with new_shot(): SQL'
 		
-		# Trigger
-		tiktak server_poll_freq, ->
+		tiktak server_poll_period, -> # Trigger
 			loadFromServer().then(parseUploaded, logg).then(insertInDb, logg).then(checkinsertion, logg)
 
-		#Check input for email-notifications with ><= Triggers
 		@notifications_check_input = (data)->
 			data? &&
 			data.email?.length>1 &&
@@ -76,7 +69,9 @@ class Currency
 			data.inequality_sign? &&
 			data.value>0
 
-	#Realtime updates (by interval on Client-side). WITHOUT ANY DOS PROTECTION HERE!
+
+	# For realtime updates (by interval on Client-side). WITHOUT ANY DOS PROTECTION HERE!
+	# TODO: caching with (last record from master table) comparison
 	get_last_shot: ->
 		new Promise (fulfill, reject)->
 			System.sql.q 'select * from show_actual_shot', [], 'currency', (actual_shot) =>
@@ -87,8 +82,9 @@ class Currency
 							forecast.shift()
 							
 							###
-								Actual:
+								now:
 									Buy: dollar:[], euro:[]
+									Sell: --||--
 								forecast:
 									Buy:  --||--
 									Sell: --||--
@@ -113,13 +109,16 @@ class Currency
 						else reject false;
 				else reject false;
 
-	# Some work with email-notifications
+
 	prepare_notifications: (user_get_data, cb)->
 		result = {}
 		if @notifications_check_input user_get_data
+
 			# HERE WILL BE REALISATION
+
 			result = success:true, data: 'yaaay!'
 		else result = success:false, data: 'bad_input_data'
 		cb result
+
 
 module.exports = Currency

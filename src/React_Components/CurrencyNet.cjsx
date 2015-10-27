@@ -5,7 +5,7 @@ CurrencyNet = React.createClass
 	new_state: (data)->
 		now = data.now
 		forecast = data.forecast
-		# console.log +forecast.buy.avg_usd
+
 		dollar:
 			sign: '$'
 			now:
@@ -46,12 +46,12 @@ CurrencyNet = React.createClass
 			dataType: 'json'
 			data: todo: 'update_currency'
 			success: (data)=>
-				console.log data
+				console.log data # delete before release 
 				@setState @new_state data
 				
 
 	componentDidMount: ->
-		UI.ModalWindow.open()
+		UI.ModalWindow.prepare()
 		@updateNet()
 		setInterval @updateNet, @props.updateInterval*1000*60
 		

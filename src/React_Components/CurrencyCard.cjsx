@@ -2,7 +2,7 @@ CurrencyCard = React.createClass
 		
 	paramClicked: (a, b, e)->
 		State.ModalWindow = chosen_param: a, chosen_currency_sign: b
-		$('#ModalWindow').dialog 'open'
+		UI.ModalWindow.open()
 
 	render: ->
 		<div className='CurrencyCard'>

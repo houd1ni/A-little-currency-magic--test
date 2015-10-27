@@ -14,7 +14,7 @@ gulp.task 'default', ['htmlpage', 'coffee'], ->
 		console.log('Event type: ' + event.type);
 		console.log('Event path: ' + event.path);
 	
-	watcherCOFFEE = gulp.watch(['./src/*.cjsx','./src/*.coffee'], ['coffee']);
+	watcherCOFFEE = gulp.watch(['./src/**/*.cjsx','./src/**/*.coffee'], ['coffee']);
 	watcherCOFFEE.on('change', log);
 
 	watcherSTYLUS = gulp.watch('./src/*.styl', ['styl']);
@@ -29,7 +29,7 @@ gulp.task 'coffee', ->
     .pipe(gulp.dest('./public'));
 
 gulp.task 'styl', ->
-  gulp.src('./src/*.styl')
+  gulp.src('./src/**/*.styl')
     .pipe(stylus())
 		.pipe(concat('layout.css'))
 		.pipe(minifyCSS())
