@@ -24,8 +24,10 @@ gulp.task 'default', ['htmlpage', 'coffee'], ->
 gulp.task 'coffee', ->
   gulp.src(sources)
 		.pipe(concat('app.js'))
+		.pipe(sourcemaps.init())
 		.pipe(cjsx())
 		.pipe(uglify())
+		.pipe(sourcemaps.write())
     .pipe(gulp.dest('./public'));
 
 gulp.task 'styl', ->
