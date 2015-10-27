@@ -1,3 +1,4 @@
+'use strict'
 
 State = # Exchange global Object
 	ModalWindow: {}
