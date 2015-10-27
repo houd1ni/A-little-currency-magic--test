@@ -20,6 +20,9 @@ gulp.task 'default', ['htmlpage', 'coffee'], ->
 	watcherSTYLUS = gulp.watch('./src/*.styl', ['styl']);
 	watcherSTYLUS.on('change', log);
 
+	watcherHTML = gulp.watch('./src/*.html', ['htmlpage']);
+	watcherHTML.on('change', log);
+
 
 gulp.task 'coffee', ->
   gulp.src(sources)
